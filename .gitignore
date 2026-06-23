@@ -1,0 +1,6 @@
+
+target/
+dbt_packages/
+logs/
+
+usgs_earthquakes.code-workspace
