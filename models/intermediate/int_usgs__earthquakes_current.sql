@@ -27,11 +27,11 @@ with
             status,
             ingested_at,
             raw_json
-        from {{ ref("stg_usgs__earthquakes") }})
+        from {{ ref("stg_usgs__earthquakes") }}
         {% if is_incremental() %}
-            where ingested_at >= timestamp('{{ max_ingested_at }}')
+        where ingested_at >= timestamp('{{ max_ingested_at }}')
         {% endif %}    
-        ,
+    ),
     
     row_numbered as (
         select
