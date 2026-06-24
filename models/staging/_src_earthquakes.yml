@@ -2,26 +2,88 @@ sources:
   - name: raw
     tables:
       - name: raw_earthquakes
+        description: >
+          Raw fact table available at BigQuery. Data is collected from FDSN USGS API by external flow available at: https://github.com/tomszy91/usgs_pipeline.git
         columns:
           - name: event_id
             data_type: string
+            description: >
+              A unique identifier for the event. This is the current preferred id for the event, and may change over time. A (generally) two-character network identifier with a (generally) eight-character network-assigned code.
+            data_tests:
+              - not_null
+
           - name: event_time
             data_type: timestamp
+            description: >
+              Time when the event occurred. Timezone is UTC.
+
           - name: updated_at
             data_type: timestamp
+            description: >
+              Time when the event was most recently updated. Timezone is UTC.
+
           - name: magnitude
             data_type: float64
+            description: >
+              The magnitude for the event.
+            data_tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: -1
+                    max_value: 10
+
           - name: place
             data_type: string
+            description: >
+              Textual description of named geographic region near to the event. This may be a city name, or a Flinn-Engdahl Region name.
+
           - name: longitude
             data_type: float64
+            description: >
+              Decimal degrees longitude. Negative values for western longitudes.
+            data_tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: -180
+                    max_value: 180
+
           - name: latitude
             data_type: float64
+            description: >
+              Decimal degrees latitude. Negative values for southern latitudes.
+            data_tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: -90
+                    max_value: 90
+
           - name: depth_km
             data_type: float64
+            description: >
+              Depth of the event in kilometers.
+            data_tests:
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    max_value: 6378
+
           - name: status
             data_type: string
+            description: >
+              Status is either automatic or reviewed. Automatic events are directly posted by automatic processing systems and have not been verified or altered by a human. Reviewed events have been looked at by a human. The level of review can range from a quick validity check to a careful reanalysis of the event.
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: ["automatic", "reviewed", "deleted"]
+
           - name: ingested_at
             data_type: timestamp
+            description: >
+              When values have been updated into Big Query.
+            data_tests:
+              - not_null
+
           - name: raw_json
             data_type: string
+            description: >
+              Raw JSON content derived from API call to FDSN service.

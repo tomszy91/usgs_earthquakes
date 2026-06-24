@@ -1,6 +1,8 @@
-
+.vscode/
 target/
 dbt_packages/
 logs/
+
+analyses/
 
 usgs_earthquakes.code-workspace
