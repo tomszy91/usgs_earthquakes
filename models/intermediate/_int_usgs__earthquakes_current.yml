@@ -1,7 +1,7 @@
 models:
-  - name: int_usgs__earthquakes_incremental
+  - name: int_usgs__earthquakes_deduplicate
     description: >
-      Model incrementally, by merge strategy, updates events that occurs in existing model and inserts new events.
+      Model deduplicate overlaping rows by [event_id] chosing the most recent [ingested_at] and by incremental logic updates values in already existing events and inserts new events.
     columns:
       - name: event_id
         data_type: string
