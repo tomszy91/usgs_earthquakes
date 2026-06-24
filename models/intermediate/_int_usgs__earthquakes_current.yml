@@ -1,5 +1,5 @@
 models:
-  - name: int_usgs__earthquakes_deduplicate
+  - name: int_usgs__earthquakes_current
     description: >
       Model deduplicate overlaping rows by [event_id] chosing the most recent [ingested_at] and by incremental logic updates values in already existing events and inserts new events.
     columns:
