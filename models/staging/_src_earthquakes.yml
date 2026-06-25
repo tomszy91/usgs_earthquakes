@@ -2,8 +2,18 @@ sources:
   - name: raw
     tables:
       - name: raw_earthquakes
+        config:
+          freshness:
+            warn_after:
+              count: 1
+              period: day
+            error_after:
+              count: 2
+              period: day
+            filter: timestamp_diff(ingested_at, CURRENT_TIMESTAMP(), HOUR) < 48
+          loaded_at_field: ingested_at
         description: >
-          Raw fact table available at BigQuery. Data is collected from FDSN USGS API by external flow available at: https://github.com/tomszy91/usgs_pipeline.git
+          Raw fact table available at BigQuery. Data is collected from FDSN USGS API by external flow available at: https://github.com/tomszy91/usgs_pipeline.git. One record is one earthquake.
         columns:
           - name: event_id
             data_type: string

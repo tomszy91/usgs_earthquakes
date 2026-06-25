@@ -1,7 +1,7 @@
 models:
   - name: stg_usgs__earthquakes
     description: >
-      Model casts data types from Source. Fail during casting will prevent taking further actions.
+      Model casts data types from Source. Fail during casting will prevent taking further actions. One record is one earthquake.
     columns:
       - name: event_id
         data_type: string
