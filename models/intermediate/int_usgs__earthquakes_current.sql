@@ -8,9 +8,11 @@
 
 {% if execute and is_incremental() %}
     {% set max_ingested_at_query %}
-        select max(ingested_at) as max_ingested_at from {{ this }}
+        select max(ingested_at) from {{ this }}
     {% endset %}
-    {% set max_ingested_at = run_query(max_ingested_at_query).columns[0].values()[0] %}
+
+    {% set max_ingested_at = dbt_utils.get_single_value(max_ingested_at_query) %}
+
 {% endif %}
 
 with
@@ -29,7 +31,7 @@ with
             raw_json
         from {{ ref("stg_usgs__earthquakes") }}
         {% if is_incremental() %}
-        where ingested_at >= timestamp('{{ max_ingested_at }}')
+            where ingested_at >= timestamp('{{ max_ingested_at }}')
         {% endif %}    
     ),
     
@@ -42,19 +44,9 @@ with
 
     deduplicated as (
         select
-            event_id,
-            event_time,
-            updated_at,
-            magnitude,
-            place,
-            longitude,
-            latitude,
-            depth_km,
-            status,
-            ingested_at,
-            raw_json
+            * except (rn)
         from row_numbered
         where rn = 1
     )
-    
+
 select * from deduplicated
