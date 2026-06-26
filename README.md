@@ -2,7 +2,8 @@
 
 [![dbt](https://img.shields.io/badge/dbt-1.10-orange.svg)](https://www.getdbt.com/)
 [![BigQuery](https://img.shields.io/badge/BigQuery-cloud-blue.svg)](https://cloud.google.com/bigquery)
-[![CI](https://github.com/tomszy91/usgs_earthquakes/actions/workflows/dbt_build.yml/badge.svg)](https://github.com/tomszy91/usgs_earthquakes/actions/workflows/dbt_build_full_refresh.yml)
+[![CI](https://github.com/tomszy91/usgs_earthquakes/actions/workflows/dbt_build.yml/badge.svg)](https://github.com/tomszy91/usgs_earthquakes/actions/workflows/dbt_build.yml)
+[![CI](https://github.com/tomszy91/usgs_earthquakes/actions/workflows/dbt_build_full_refresh.yml/badge.svg)](https://github.com/tomszy91/usgs_earthquakes/actions/workflows/dbt_build_full_refresh.yml)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 dbt project that transforms raw USGS earthquake data into a deduplicated,
