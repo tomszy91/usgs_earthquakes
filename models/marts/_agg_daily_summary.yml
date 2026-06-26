@@ -4,13 +4,17 @@ models:
       Table summarizes each day from the 'int_usgs__earthquakes_current' model. Each row is a day. It shows the minimum and maximum recorded magnitude, depth in kilometers, count of recorded in automated way, reviewed and deleted earthquakes. It sums the recorded earthquakes in a day.
     data_tests:
       - dbt_utils.expression_is_true:
-          expression: "status_automatic_count >= 0"
+          arguments:
+            expression: "status_automatic_count >= 0"
       - dbt_utils.expression_is_true:
-          expression: "status_reviewed_count >= 0" 
+          arguments:
+            expression: "status_reviewed_count >= 0" 
       - dbt_utils.expression_is_true:
-          expression: "status_deleted_count >= 0"
+          arguments:          
+            expression: "status_deleted_count >= 0"
       - dbt_utils.expression_is_true:
-          expression: "status_deleted_count + status_reviewed_count + status_automatic_count = total_earthquakes"  
+          arguments:          
+            expression: "status_deleted_count + status_reviewed_count + status_automatic_count = total_earthquakes"  
     
     columns:
       - name: event_date

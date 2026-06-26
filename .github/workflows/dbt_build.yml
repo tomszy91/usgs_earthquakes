@@ -22,7 +22,7 @@ jobs:
 
       - name: dbt install
         run: |
-          pip install dbt-bigquery==1.10.0
+          pip install dbt-core==1.10.8 dbt-bigquery==1.10.0
 
       - name: Write GCP credentials
         run: echo "${{ secrets.GCP_SA_KEY_B64 }}" | base64 -d > /tmp/gcp-key.json
