@@ -1,0 +1,4 @@
+data_tests: 
+  - name: assert_filtered_old_events
+    description: >
+      This test checks whether the earthquakes that occured the project's start skipped filtering

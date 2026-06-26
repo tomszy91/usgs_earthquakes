@@ -4,7 +4,7 @@
     incremental_strategy = 'merge',
     on_schema_change = 'fail',
     merge_update_columns = ['event_time', 'updated_at', 'magnitude', 'place', 'longitude', 'latitude', 'depth_km', 'status', 'ingested_at', 'raw_json']
-)}}
+) }}
 
 {% if execute and is_incremental() %}
     {% set max_ingested_at_query %}
@@ -15,7 +15,7 @@
 
 {% endif %}
 
-with
+with    
     source as (
         select
             event_id,
@@ -29,7 +29,7 @@ with
             status,
             ingested_at,
             raw_json
-        from {{ ref("stg_usgs__earthquakes") }}
+        from {{ ref("int_usgs__earthquakes_relevant") }}
         {% if is_incremental() %}
             where ingested_at >= timestamp('{{ max_ingested_at }}')
         {% endif %}    
