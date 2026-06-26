@@ -1,0 +1,61 @@
+name: dbt_build
+on:
+  schedule:
+    - cron: "0 18 * * 1-6"
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  dbt_build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: repository checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: python setup
+        uses: actions/setup-python@v5.6.0
+        with:
+          python-version: "3.12"
+
+      - name: dbt install
+        run: |
+          pip install dbt-bigquery==3.25.0
+
+      - name: Write GCP credentials
+        run: echo "${{ secrets.GCP_SA_KEY_B64 }}" | base64 -d > /tmp/gcp-key.json
+
+      - name: profiles.yml create
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml << EOF
+          usgs_earthquakes:
+              target: prod
+              outputs:
+                prod:
+                  dataset: ${{ secrets.BQ_DATASET }}
+                  job_execution_timeout_seconds: 600
+                  job_retries: 1
+                  keyfile: /tmp/gcp-key.json
+                  location: europe-west3
+                  method: service-account
+                  priority: interactive
+                  project: ${{ secrets.BQ_PROJECT }}
+                  threads: 4
+                  type: bigquery
+          EOF
+
+      - name: dbt packages install
+        run: |
+          dbt deps
+
+      - name: dbt source freshness run
+        run: |
+          dbt source freshness
+        continue-on-error: false
+
+      - name: dbt run run
+        run: |
+          dbt run
