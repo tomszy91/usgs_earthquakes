@@ -1,0 +1,61 @@
+models:
+  - name: agg_daily_summary
+    description: >
+      Table summarizes each day from the 'int_usgs__earthquakes_current' model. Each row is a day. It shows the minimum and maximum recorded magnitude, depth in kilometers, count of recorded in automated way, reviewed and deleted earthquakes. It sums the recorded earthquakes in a day.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          expression: "status_automatic_count >= 0"
+      - dbt_utils.expression_is_true:
+          expression: "status_reviewed_count >= 0" 
+      - dbt_utils.expression_is_true:
+          expression: "status_deleted_count >= 0"
+      - dbt_utils.expression_is_true:
+          expression: "status_deleted_count + status_reviewed_count + status_automatic_count = total_earthquakes"  
+    
+    columns:
+      - name: event_date
+        data_type: date
+        description: >
+          Day when earthquakes occured.
+        data_tests:
+          - unique
+
+      - name: min_magnitude
+        data_type: float64
+        description: >
+          The lowest recorded magnitude in a day.
+
+      - name: max_magnitude
+        data_type: float64
+        description: >
+          The highest recorded magnitude in a day.
+
+      - name: min_depth
+        data_type: float64
+        description: >
+          The shallowest recorded earthquake in a day.
+
+      - name: max_depth
+        data_type: float64
+        description: >
+          The deepest recorded earthquake in a day.
+
+      - name: status_automatic_count
+        data_type: int64
+        description: >
+          Count of earthquakes that were recorded only in an automated way in a day.
+
+      - name: status_reviewed_count
+        data_type: int64
+        description: >
+          Count of earthquakes that were reviewed by geological surveys in a day.
+
+      - name: status_deleted_count
+        data_type: int64
+        description: >
+          Count of earthquakes that were classified as deleted by geological surveys after review in a day.      
+
+      - name: total_earthquakes
+        data_type: int64
+        description: >
+          Total count of earthquakes that occured in a day.
