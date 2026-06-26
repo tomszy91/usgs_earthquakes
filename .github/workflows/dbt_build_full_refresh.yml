@@ -1,7 +1,7 @@
 name: dbt_build
 on:
   schedule:
-    - cron: "0 18 * * 1-6"
+    - cron: "0 18 * * 0"
   push:
     branches:
       - main
@@ -56,6 +56,6 @@ jobs:
           dbt source freshness
         continue-on-error: false
 
-      - name: dbt build run
+      - name: dbt build --full-refresh run
         run: |
-          dbt build
+          dbt build --full-refresh
