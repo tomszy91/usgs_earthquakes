@@ -12,7 +12,7 @@ with
             cast(depth_km as float64) as depth_km,
             cast(status as string) as status,
             cast(ingested_at as timestamp) as ingested_at,
-            cast(raw_json as string) as raw_json,
+            cast(raw_json as string) as raw_json
         from source
     )
 
