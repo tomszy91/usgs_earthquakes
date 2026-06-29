@@ -36,13 +36,14 @@ ingestion only, this repo owns transformation only.
 
 ### intermediate
 
-- **`int_usgs__earthquakes_relevant`**: the upstream pipeline fetches by
-  `updatedafter`, which means it can resurface earthquakes from years ago
+- **`int_usgs__earthquakes_current`**: incremental, `unique_key='event_id'`,
+  `incremental_strategy='merge'`.
+  - The upstream pipeline fetches by `updatedafter`, which means it can resurface earthquakes from years ago
   if USGS happens to revise them. This model filters the dataset down to
   events that actually occurred after `var('project_start')`, so old,
   unrelated revisions don't pollute the analysis.
-- **`int_usgs__earthquakes_current`**: incremental, `unique_key='event_id'`,
-  `incremental_strategy='merge'`. Deduplicates by keeping, per `event_id`,
+
+  - Deduplicates by keeping, per `event_id`,
   the row with the highest `ingested_at`. The incremental filter avoids a
   raw subquery in the WHERE clause (BigQuery does not prune partitions on
   subqueries) by resolving the watermark once via `dbt_utils.get_single_value`

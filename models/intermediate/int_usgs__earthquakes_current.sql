@@ -29,9 +29,11 @@ with
             status,
             ingested_at,
             raw_json
-        from {{ ref("int_usgs__earthquakes_relevant") }}
+        from {{ ref("stg_usgs__earthquakes") }}
+        where event_time >= timestamp('{{ var("project_start") }}')
+
         {% if is_incremental() %}
-            where ingested_at >= timestamp('{{ max_ingested_at }}')
+            and ingested_at >= timestamp('{{ max_ingested_at }}')
         {% endif %}    
     ),
     

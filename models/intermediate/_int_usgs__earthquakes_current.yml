@@ -1,7 +1,7 @@
 models:
   - name: int_usgs__earthquakes_current
     description: >
-      Model deduplicate overlaping rows by [event_id] chosing the most recent [ingested_at] and by incremental logic updates values in already existing events and inserts new events.
+      Model filters out earthquakes that were ingested into warehouse by the pipeline because they were updated by USGS in the recent feeds, despite the earthquake occured before the project started. By this, model collects data only for earthquakes that occured after project's start. Model also deduplicates overlaping rows by [event_id] chosing the most recent [ingested_at] and by incremental logic updates values in already existing events and inserts new events. Each row is one earthquake
     columns:
       - name: event_id
         data_type: string
