@@ -99,3 +99,4 @@ run `dbt source freshness` before the actual build:
 ## License
 
 MIT, see [LICENSE](LICENSE).
+
