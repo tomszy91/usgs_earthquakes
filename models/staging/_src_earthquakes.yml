@@ -84,7 +84,7 @@ sources:
             data_tests:
               - accepted_values:
                   arguments:
-                    values: ["automatic", "reviewed", "deleted"]
+                    values: ["automatic", "reviewed", "deleted", "AUTOMATIC", "REVIEWED", "DELETED"]
 
           - name: ingested_at
             data_type: timestamp
